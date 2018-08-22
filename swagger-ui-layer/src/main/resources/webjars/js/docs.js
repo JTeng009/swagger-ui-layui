@@ -88,7 +88,7 @@ function mainData(url){
 
 $(function () {
     getService();
-    // mainData(url);
+    mainData(url);
 });
 
 //渲染返回参数
