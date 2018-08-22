@@ -9,6 +9,8 @@ var tempBodyResponseModel = $.templates('#temp_body_response_model');
 //获取context path
 var contextPath = getContextPath();
 
+var url = "http://petstore.swagger.io/v2/swagger.json"
+
 function getContextPath() {
     var pathName = document.location.pathname;
     var index = pathName.substr(1).indexOf("/");
@@ -17,7 +19,7 @@ function getContextPath() {
 }
 
 $('#service').change(function(){ 
-    var url = $(this).children('option:selected').val();;
+    url = $(this).children('option:selected').val();;
     mainData(url);
 }); 
 
