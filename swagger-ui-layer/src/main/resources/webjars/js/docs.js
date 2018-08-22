@@ -9,7 +9,7 @@ var tempBodyResponseModel = $.templates('#temp_body_response_model');
 //获取context path
 var contextPath = getContextPath();
 
-var url = "http://petstore.swagger.io/v2/swagger.json"
+var url = "";
 
 function getContextPath() {
     var pathName = document.location.pathname;
@@ -18,16 +18,10 @@ function getContextPath() {
     return result;
 }
 
-$('#service').change(function(){
-    url = $(this).children('option:selected').val();
-    console.log(url) ;
-    mainData("http://petstore.swagger.io/v2/swagger.json");
-});
-
 function switchService(){
     url = $("#service").val();
     console.log(url);
-    mainData("http://petstore.swagger.io/v2/swagger.json");
+    window.location.href='/docs.html#'+url;
 } 
 
 
@@ -42,6 +36,7 @@ function getService(){
             for (var i = 0; i < data.length; i++) {
                  $("#service").append("<option value='"+data[i].url+"'>"+data[i].name+"</option>");
             }
+            url = data[0].url;
         }
     });
  }
