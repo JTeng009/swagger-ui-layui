@@ -88,6 +88,7 @@ function mainData(url){
 }
 
 $(function () {
+	
     getService();
     mainData(url);
 });
