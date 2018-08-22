@@ -27,7 +27,7 @@ $('#service').change(function(){
 function switchService(){
     url = $("#service").val();
     console.log(url);
-    mainData(url);
+    mainData("http://petstore.swagger.io/v2/swagger.json");
 } 
 
 
