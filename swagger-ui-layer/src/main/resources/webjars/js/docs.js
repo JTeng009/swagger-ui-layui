@@ -18,16 +18,20 @@ function getContextPath() {
     return result;
 }
 
-$('#service').change(function(){ 
-    url = $(this).children('option:selected').val();;
+$('#service').change(function(){
+    url = $(this).children('option:selected').val();
+    console.log(url) ;
     mainData(url);
-}); 
+});
+
+function switchService(){
+    url = $("#service").val();
+    console.log(url);
+    mainData(url);
+} 
 
 
 function getService(){
-    // for (var i = 0; i < data.length; i++) {
-    //              $("#service").append("<option value='"+data[i].location+"'>"+data[i].name+"</option>");
-    //  }
     $.ajax({
         dataType: 'json',
         type: 'GET',
