@@ -65,13 +65,6 @@
             {{!-- body 内容 $ref = temp_body --}}
         </div>
 
-        {{if info.license}}
-        <div class="layui-footer footer">
-            <div class="layui-main">
-                <a href="{{:info.license.url}}" target="blank">{{:info.license.name}}</a></p>
-            </div>
-        </div>
-        {{/if}}
     </div>
 </script>
 <script id="temp_body" type="text/template">
@@ -104,12 +97,15 @@
                         <th>Description</th>
                         <td colspan="3">{{:description}}</td>
                     </tr>
+					
+             		{{if consumes}}
                     <tr>
                         <th>Consumes</th>
                         <td>{{:consumes}}</td>
                         <th>Produces</th>
                         <td>{{:produces}}</td>
                     </tr>
+                    {{/if}}
                     </tbody>
                 </table>
                 <fieldset class="layui-elem-field layui-field-title">
