@@ -23,15 +23,18 @@ $('#service').change(function(){
 
 
 function getService(){
+    // for (var i = 0; i < data.length; i++) {
+    //              $("#service").append("<option value='"+data[i].location+"'>"+data[i].name+"</option>");
+    //  }
     $.ajax({
         dataType: 'json',
         type: 'GET',
         url: "/swagger-resources",
         success: function (data) {
-            console.log(data);
             var data = eval(data);
+            console.log(data);
             for (var i = 0; i < data.length; i++) {
-                 $("#service").append("<option value='"+data[i].location+"'>"+data[i].name+"</option>");
+                 $("#service").append("<option value='"+data[i].url+"'>"+data[i].name+"</option>");
             }
         }
     });
