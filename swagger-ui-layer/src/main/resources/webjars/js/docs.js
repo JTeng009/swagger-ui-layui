@@ -21,7 +21,7 @@ function getContextPath() {
 $('#service').change(function(){
     url = $(this).children('option:selected').val();
     console.log(url) ;
-    mainData(url);
+    mainData("http://petstore.swagger.io/v2/swagger.json");
 });
 
 function switchService(){
