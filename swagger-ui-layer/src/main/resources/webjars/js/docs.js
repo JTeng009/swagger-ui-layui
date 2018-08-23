@@ -8,8 +8,9 @@ var tempBodyResponseModel = $.templates('#temp_body_response_model');
 
 //获取context path
 var contextPath = getContextPath();
+var projectName;
 
-var url = "";
+var url = ""
 
 function getContextPath() {
     var pathName = document.location.pathname;
@@ -20,77 +21,79 @@ function getContextPath() {
 
 function switchService(){
     url = $("#service").val();
-    console.log(url);
     window.location.href='/docs.html#'+url;
+    location.reload();
 } 
 
-
-function getService(){
-    $.ajax({
+$(function () {
+	var service;
+	var test = window.location.href;
+	$.ajax({
         dataType: 'json',
         type: 'GET',
         url: "/swagger-resources",
-        success: function (data) {
-            var data = eval(data);
-            console.log(data);
-            for (var i = 0; i < data.length; i++) {
-                 $("#service").append("<option value='"+data[i].url+"'>"+data[i].name+"</option>");
-            }
-            url = data[0].url;
-        }
-    });
- }
-
-function mainData(url){
-    $.ajax({
-        url: url,
-        // url : "http://petstore.swagger.io/v2/swagger.json",
-        dataType: "json",
-        type: "get",
         async: false,
         success: function (data) {
-            //layui init
-            layui.use(['layer', 'jquery', 'element'], function () {
-                var $ = layui.jquery, layer = layui.layer, element = layui.element;
-            });
-            var jsonData = eval(data);
+            service = eval(data);
+        	if(test.indexOf("#") != -1){
+        		url = test.substr(test.indexOf("#")+1,test.length);
+        		projectName = url.split("/")[1];
+        	}else{
+        		//默认显示第一个项目
+        		url = service[0].url;
+        		projectName = service[0].name;
+        	}
+        	console.log(url);
+        	console.log(projectName);
+            $.ajax({
+                url: url,
+                dataType: "json",
+                type: "get",
+                async: false,
+                success: function (data) {
+                    //layui init
+                    layui.use(['layer', 'jquery', 'element'], function () {
+                        var $ = layui.jquery, layer = layui.layer, element = layui.element;
+                    });
+                    var jsonData = eval(data);
+                    $("#title").html(jsonData.info.title);
+                    $("body").html($("#template").render(jsonData));
 
-            $("#title").html(jsonData.info.title);
-            $("body").html($("#template").render(jsonData));
-
-            $("[name='a_path']").click(function () {
-                var path = $(this).attr("path");
-                var method = $(this).attr("method");
-                var operationId = $(this).attr("operationId");
-                $.each(jsonData.paths[path], function (i, d) {
-                    if (d.operationId == operationId) {
-                        d.path = path;
-                        d.method = method;
-                        $("#path-body").html(tempBody.render(d));
-                        var modelName = getResponseModelName(d.responses["200"]["schema"]["$ref"]);
-                        renderResponseModel(jsonData, modelName);
+                    $("[name='a_path']").click(function () {
+                        var path = $(this).attr("path");
+                        var method = $(this).attr("method");
+                        var operationId = $(this).attr("operationId");
+                        $.each(jsonData.paths[path], function (i, d) {
+                            if (d.operationId == operationId) {
+                                d.path = path;
+                                d.method = method;
+                                $("#path-body").html(tempBody.render(d));
+                                var modelName = getResponseModelName(d.responses["200"]["schema"]["$ref"]);
+                                renderResponseModel(jsonData, modelName);
+                            }
+                        });
+                    });
+                    for (var i = 0; i < service.length; i++) {
+                    	if(service[i].name == projectName){
+                    		$("#service").append("<option value='"+service[i].url+"' selected=true>"+service[i].name+"</option>");
+                    	}else{
+                    		$("#service").append("<option value='"+service[i].url+"'>"+service[i].name+"</option>");
+                    	}                    
                     }
-                });
-            });
-
-            //提交测试按钮
-            $("[name='btn_submit']").click(function () {
-                var operationId = $(this).attr("operationId");
-                var parameterJson = {};
-                $("input[operationId='" + operationId + "']").each(function (index, domEle) {
-                    var k = $(domEle).attr("name");
-                    var v = $(domEle).val();
-                    parameterJson.push({k: v});
-                });
+                    //提交测试按钮
+                    $("[name='btn_submit']").click(function () {
+                        var operationId = $(this).attr("operationId");
+                        var parameterJson = {};
+                        $("input[operationId='" + operationId + "']").each(function (index, domEle) {
+                            var k = $(domEle).attr("name");
+                            var v = $(domEle).val();
+                            parameterJson.push({k: v});
+                        });
+                    });
+                }
             });
         }
     });
-}
-
-$(function () {
-	
-    getService();
-    mainData(url);
 });
 
 //渲染返回参数
@@ -130,7 +133,7 @@ function getResponseModelName(val) {
 
 //测试按钮，获取数据
 function getData(operationId) {
-    var path = contextPath + $("[m_operationId='" + operationId + "']").attr("path");
+    var path = contextPath +projectName +"/"+ $("[m_operationId='" + operationId + "']").attr("path");
     //path 参数
     $("[p_operationId='" + operationId + "'][in='path']").each(function (index, domEle) {
         var k = $(domEle).attr("name");
@@ -183,6 +186,12 @@ function getData(operationId) {
         success: function (data) {
             var options = {
                 withQuotes: true
+            };
+            $("#json-response").jsonViewer(data, options);
+        },
+        error: function(data){
+            var options = {
+                    withQuotes: true
             };
             $("#json-response").jsonViewer(data, options);
         }
