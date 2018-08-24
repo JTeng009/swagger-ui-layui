@@ -21,7 +21,7 @@ function getContextPath() {
 
 function switchService(){
     url = $("#service").val();
-    window.location.href='/docs.html#'+url;
+    window.location.href= contextPath + '/docs.html#'+url;
     location.reload();
 } 
 
@@ -36,11 +36,11 @@ $(function () {
         success: function (data) {
             service = eval(data);
         	if(test.indexOf("#") != -1){
-        		url = test.substr(test.indexOf("#")+1,test.length);
-        		projectName = url.split("/")[1];
+        		url = contextPath + test.substr(test.indexOf("#")+1,test.length);
+        		projectName = url.replace(contextPath,"").split("/")[1];
         	}else{
         		//默认显示第一个项目
-        		url = service[0].url;
+        		url = contextPath + service[0].url;
         		projectName = service[0].name;
         	}
         	console.log(url);
