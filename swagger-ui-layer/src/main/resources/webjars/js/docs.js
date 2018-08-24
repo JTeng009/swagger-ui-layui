@@ -31,7 +31,7 @@ $(function () {
 	$.ajax({
         dataType: 'json',
         type: 'GET',
-        url: "/swagger-resources",
+        url: contextPath + "/swagger-resources",
         async: false,
         success: function (data) {
             service = eval(data);
@@ -133,7 +133,7 @@ function getResponseModelName(val) {
 
 //测试按钮，获取数据
 function getData(operationId) {
-    var path = contextPath +projectName +"/"+ $("[m_operationId='" + operationId + "']").attr("path");
+    var path = contextPath + "/" +projectName +"/"+ $("[m_operationId='" + operationId + "']").attr("path");
     //path 参数
     $("[p_operationId='" + operationId + "'][in='path']").each(function (index, domEle) {
         var k = $(domEle).attr("name");
