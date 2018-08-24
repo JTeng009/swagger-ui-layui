@@ -4,7 +4,7 @@
 
 	<groupId>com.github.JTeng009</groupId>
 	<artifactId>swagger-ui-layui</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<url>https://github.com/JTeng009/swagger-ui-layui</url>
